@@ -1,0 +1,36 @@
+Include: _setup.vader
+
+Execute (Open Tabs and set tab-local directories):
+  tabnew
+  call mkdir("/tmp/path1", "p")
+  tcd /tmp/path1
+  set ft=go
+
+  call mkdir("/tmp/path2", "p")
+  tabnew
+  tcd /tmp/path2
+  set ft=go
+
+Execute (Change tab 1):
+  4tabn
+  AssertEqual '/tmp/path1', getcwd()
+  Neomake
+
+Execute (Change tab 2):
+  5tabn
+  AssertEqual '/tmp/path2', getcwd()
+  Neomake
+
+Execute (Check tab 1):
+  4tabn
+  AssertEqual '/tmp/path1', getcwd()
+
+Execute (Check tab 2):
+  5tabn
+  AssertEqual '/tmp/path2', getcwd()
+
+After:
+  5tabn
+  q!
+  4tabn
+  q!
